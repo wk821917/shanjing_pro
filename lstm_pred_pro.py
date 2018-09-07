@@ -76,6 +76,7 @@ print(len(xtilt_list),len(ytilt_list))
 #        water_percent3.append(float(data_60.iloc[i,0]['3']['82']))
 print(len(water_percent2),len(water_percent3))
 data = pd.DataFrame({'time_step':time_list,'xtilt':xtilt_list,'ytilt':ytilt_list,'water2':water_percent2,'water3':water_percent3})
+len_data = data.shape[0]
 #data.iloc[10:,:].to_csv(os.path.join(output_result_folder,'input_data.csv'))
 zero_lst = []
 for i in range(data.shape[0]):
@@ -86,7 +87,7 @@ if len(zero_lst)>0:
         data = data.drop(i)
 
 data.to_csv(os.path.join(output_result_folder,'input_data.csv'))
-len_data = data.shape[0]
+
 
 f = open('shanjing_pro-master/lstm.json', 'r')  #load the json file 
 json_string = f.read()
