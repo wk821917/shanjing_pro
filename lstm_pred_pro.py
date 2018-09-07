@@ -49,7 +49,7 @@ get data
 http = urllib3.PoolManager()
 res = http.request('GET','http://openapi.ecois.info/v2/poi/device/data?sn=18031400075227&nodes=1,2,3&params=82,182,185&begin=20180615&end=20180820',headers=headers)
 data1 = pd.DataFrame(json.loads(str(res.data,encoding = 'utf-8')))
-with open('My_Call_For_Code_Pro-master/last_time.json') as load_f:
+with open('shanjing_pro-master/last_time.json') as load_f:
     json_dict = json.load(load_f)
 print(json_dict)
 json_key = json_dict['last_time']
@@ -87,12 +87,12 @@ if len(zero_lst)>0:
 
 data.to_csv(os.path.join(output_result_folder,'input_data.csv'))
 
-f = open('My_Call_For_Code_Pro-master/lstm.json', 'r')  #load the json file 
+f = open('shanjing_pro-master/lstm.json', 'r')  #load the json file 
 json_string = f.read()
 f.close()
 
 model = model_from_json(json_string)  #define model by the json string
-model.load_weights('My_Call_For_Code_Pro-master/weight.hdf5')  #load weights for the model
+model.load_weights('shanjing_pro-master/weight.hdf5')  #load weights for the model
 # print(json_string)
 
 '''
