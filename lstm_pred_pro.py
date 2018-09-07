@@ -124,7 +124,7 @@ print(result)
 print(result.shape)
 
 result_lst = result[:,0]#[-1,:]
-result_df = DataFrame({'predict':result_lst})
+result_df = DataFrame({'time_step':time_list[60:], 'predict':result_lst})
 result_df.to_csv(output_result_path)
 
 last_time = data_60.index[-1]
