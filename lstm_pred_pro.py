@@ -49,7 +49,7 @@ get data
 http = urllib3.PoolManager()
 res = http.request('GET','http://openapi.ecois.info/v2/poi/device/data?sn=18031400075227&nodes=1,2,3&params=82,182,185&begin=20180615&end=20180820',headers=headers)
 data1 = pd.DataFrame(json.loads(str(res.data,encoding = 'utf-8')))
-with open('shanjing_pro-master/last_time.json') as load_f:
+with open('wktest-master/last_time.json') as load_f:
     json_dict = json.load(load_f)
 print(json_dict)
 json_key = json_dict['last_time']
@@ -61,8 +61,6 @@ for i in range(len(data1.index)):
         break
 print(key_num)
 data_60 = data1.iloc[key_num:key_num+1000,:]
-time_list = data_60.index
-print(time_list)
 for i in range(data_60.shape[0]):
     if (len(data_60.iloc[i,0]['1'])==2) and ('82' in data_60.iloc[i,0]['2'].keys()):
         xtilt_list.append(float(data_60.iloc[i,0]['1']['182']))
@@ -75,7 +73,7 @@ print(len(xtilt_list),len(ytilt_list))
 #        water_percent2.append(float(data_60.iloc[i,0]['2']['82']))
 #        water_percent3.append(float(data_60.iloc[i,0]['3']['82']))
 print(len(water_percent2),len(water_percent3))
-data = pd.DataFrame({'time_step':time_list,'xtilt':xtilt_list,'ytilt':ytilt_list,'water2':water_percent2,'water3':water_percent3})
+data = pd.DataFrame({'xtilt':xtilt_list,'ytilt':ytilt_list,'water2':water_percent2,'water3':water_percent3})
 #data.iloc[10:,:].to_csv(os.path.join(output_result_folder,'input_data.csv'))
 zero_lst = []
 for i in range(data.shape[0]):
@@ -87,12 +85,12 @@ if len(zero_lst)>0:
 
 data.to_csv(os.path.join(output_result_folder,'input_data.csv'))
 
-f = open('shanjing_pro-master/lstm.json', 'r')  #load the json file 
+f = open('wktest-master/lstm.json', 'r')  #load the json file 
 json_string = f.read()
 f.close()
 
 model = model_from_json(json_string)  #define model by the json string
-model.load_weights('shanjing_pro-master/weight.hdf5')  #load weights for the model
+model.load_weights('wktest-master/weight.hdf5')  #load weights for the model
 # print(json_string)
 
 '''
@@ -106,7 +104,6 @@ transform the datasets
 inputs = []
 outputs = []
 #data = data.iloc[-50:,1:]
-data = data.drop('time_step', axis=1)
 data = np.array(data)
 #x = []
 #x.append(data)
@@ -124,7 +121,7 @@ print(result)
 print(result.shape)
 
 result_lst = result[:,0]#[-1,:]
-result_df = DataFrame({'time_step':time_list[60:], 'predict':result_lst})
+result_df = DataFrame({'predict':result_lst})
 result_df.to_csv(output_result_path)
 
 last_time = data_60.index[-1]
