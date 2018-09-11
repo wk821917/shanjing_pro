@@ -126,11 +126,13 @@ print(result)
 print(result.shape)
 len_result = result.shape[0]
 
+last_time = data_60.index[-1]
+
 result_lst = result[:,0]#[-1,:]
-result_df = DataFrame({'time_step':time_list[len_data-len_result:], 'predict':result_lst})
+time_list_p = time_list[len_data-len_result-10:].append([last_time+303000*i for i in range(1,11,1)])
+result_df = DataFrame({'time_step':time_list_p, 'predict':result_lst})
 result_df.to_csv(output_result_path)
 
-last_time = data_60.index[-1]
 json_dict['last_time'] = last_time
 print(json_dict)
 with open(output_json_path,'w') as json_f:
