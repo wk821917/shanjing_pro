@@ -129,7 +129,7 @@ len_result = result.shape[0]
 last_time = data_60.index[-1]
 
 result_lst = result[:,0]#[-1,:]
-time_list_p = time_list[len_data-len_result-10:].append([str(int(last_time)+303000*i) for i in range(1,11,1)])
+time_list_p = time_list[len_data-len_result-10:] + ([str(int(last_time)+303000*i) for i in range(1,11,1)])
 result_df = DataFrame({'time_step':time_list_p, 'predict':result_lst})
 result_df.to_csv(output_result_path)
 
